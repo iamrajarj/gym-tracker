@@ -160,6 +160,7 @@ textarea {
 
 .heatmap-card {
   overflow-x: auto;
+  position: relative; /* enable absolute positioning of legend */
 }
 
 .heatmap-grid {
@@ -176,10 +177,11 @@ textarea {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
   color: #555;
   font-size: 12px;
-  margin-left: auto;
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
 }
 
 .heatmap-legend-label {
