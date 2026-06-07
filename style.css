@@ -171,12 +171,63 @@ textarea {
   width: max-content;
 }
 
+.heatmap-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #555;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.heatmap-legend-label {
+  margin: 0 4px;
+}
+
+.heatmap-key {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+}
+
+.heatmap-key.level-0 {
+  background: #f0f0f0;
+}
+
+.heatmap-key.level-1 {
+  background: #b7e0a9;
+}
+
+.heatmap-key.level-2 {
+  background: #63c76f;
+}
+
+.heatmap-key.level-3 {
+  background: #1f9d48;
+}
+
 .day {
   width: 14px;
   height: 14px;
   background: #ddd;
   border-radius: 2px;
   cursor: pointer;
+}
+
+.day.level-1 {
+  background: #b7e0a9;
+}
+
+.day.level-2 {
+  background: #63c76f;
+}
+
+.day.level-3 {
+  background: #1f9d48;
 }
 
 .day.blank {
@@ -187,7 +238,4 @@ textarea {
 .dark .day {
   background: #333;
 }
-
-.day.active {
-  background: #2ecc71;
-}
+/* intensity colors defined above; removed duplicate overrides */

@@ -53,35 +53,35 @@
 
 <tr>
 <td>Gym</td>
-<td><input type="checkbox" class="gym" data-day="0"></td>
-<td><input type="checkbox" class="gym" data-day="1"></td>
-<td><input type="checkbox" class="gym" data-day="2"></td>
+<td><input type="checkbox" class="gym" data-task="gym" data-day="0"></td>
+<td><input type="checkbox" class="gym" data-task="gym" data-day="1"></td>
+<td><input type="checkbox" class="gym" data-task="gym" data-day="2"></td>
 <td class="off">OFF</td>
-<td><input type="checkbox" class="gym" data-day="4"></td>
-<td><input type="checkbox" class="gym" data-day="5"></td>
+<td><input type="checkbox" class="gym" data-task="gym" data-day="4"></td>
+<td><input type="checkbox" class="gym" data-task="gym" data-day="5"></td>
 <td class="off">OFF</td>
 </tr>
 
 <tr>
 <td>Sleep</td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit" data-task="sleep" data-day="0"></td>
+<td><input type="checkbox" class="habit" data-task="sleep" data-day="1"></td>
+<td><input type="checkbox" class="habit" data-task="sleep" data-day="2"></td>
+<td><input type="checkbox" class="habit" data-task="sleep" data-day="3"></td>
+<td><input type="checkbox" class="habit" data-task="sleep" data-day="4"></td>
+<td><input type="checkbox" class="habit" data-task="sleep" data-day="5"></td>
+<td><input type="checkbox" class="habit" data-task="sleep" data-day="6"></td>
 </tr>
 
 <tr>
 <td>Protein</td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
-<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit" data-task="protein" data-day="0"></td>
+<td><input type="checkbox" class="habit" data-task="protein" data-day="1"></td>
+<td><input type="checkbox" class="habit" data-task="protein" data-day="2"></td>
+<td><input type="checkbox" class="habit" data-task="protein" data-day="3"></td>
+<td><input type="checkbox" class="habit" data-task="protein" data-day="4"></td>
+<td><input type="checkbox" class="habit" data-task="protein" data-day="5"></td>
+<td><input type="checkbox" class="habit" data-task="protein" data-day="6"></td>
 </tr>
 
 </tbody>
@@ -108,11 +108,19 @@
       <span></span>
       <span>Fri</span>
       <span></span>
-      <span></span>
+      <span>Sun</span>
     </div>
     <div class="heatmap-container">
       <div id="heatmap" class="heatmap-grid"></div>
     </div>
+  </div>
+  <div class="heatmap-legend">
+    <span class="heatmap-legend-label">Less</span>
+    <span class="heatmap-key level-0"></span>
+    <span class="heatmap-key level-1"></span>
+    <span class="heatmap-key level-2"></span>
+    <span class="heatmap-key level-3"></span>
+    <span class="heatmap-legend-label">More</span>
   </div>
 </div>
 </div>

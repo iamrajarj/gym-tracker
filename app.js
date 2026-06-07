@@ -1,16 +1,17 @@
 const checkboxes = document.querySelectorAll("input[type='checkbox']");
+const taskCheckboxes = document.querySelectorAll("input[type='checkbox'][data-task]");
 const gymBoxes = document.querySelectorAll(".gym");
 const notes = document.getElementById("notes");
 
 const heatmap = document.getElementById("heatmap");
 const heatmapMonths = document.getElementById("heatmapMonths");
 
-let gymLog = JSON.parse(localStorage.getItem("gymHeatmap") || "{}");
+let dailyStatus = JSON.parse(localStorage.getItem("dailyStatus") || "{}");
+let currentWeekKey = getWeekKey();
 
 /* SAVE */
-function getCurrentWeekStart() {
-  const today = new Date();
-  const monday = new Date(today);
+function getCurrentWeekStart(date = new Date()) {
+  const monday = new Date(date);
   const dayIndex = (monday.getDay() + 6) % 7; // Monday = 0
   monday.setDate(monday.getDate() - dayIndex);
   monday.setHours(0, 0, 0, 0);
@@ -21,50 +22,62 @@ function getDateKey(date) {
   return date.toISOString().slice(0, 10);
 }
 
-function syncCurrentWeekGymHeatmap() {
-  const weekStart = getCurrentWeekStart();
-
-  gymBoxes.forEach(checkbox => {
-    const dayOffset = Number(checkbox.dataset.day);
-    if (!Number.isFinite(dayOffset)) return;
-
-    const targetDate = new Date(weekStart);
-    targetDate.setDate(targetDate.getDate() + dayOffset);
-
-    const dateKey = getDateKey(targetDate);
-    if (checkbox.checked) {
-      gymLog[dateKey] = true;
-    } else {
-      delete gymLog[dateKey];
-    }
-  });
-
-  localStorage.setItem("gymHeatmap", JSON.stringify(gymLog));
+function getWeekKey(date = new Date()) {
+  return getDateKey(getCurrentWeekStart(date));
 }
 
-function updateCurrentWeekGymCheckboxes() {
+function syncCurrentWeekHeatmapData() {
   const weekStart = getCurrentWeekStart();
 
-  gymBoxes.forEach(checkbox => {
+  taskCheckboxes.forEach(checkbox => {
     const dayOffset = Number(checkbox.dataset.day);
-    if (!Number.isFinite(dayOffset)) return;
+    const task = checkbox.dataset.task;
+    if (!Number.isFinite(dayOffset) || !task) return;
 
     const targetDate = new Date(weekStart);
     targetDate.setDate(targetDate.getDate() + dayOffset);
 
     const dateKey = getDateKey(targetDate);
-    checkbox.checked = !!gymLog[dateKey];
+    dailyStatus[dateKey] = dailyStatus[dateKey] || { gym: false, sleep: false, protein: false };
+    dailyStatus[dateKey][task] = checkbox.checked;
   });
+
+  localStorage.setItem("dailyStatus", JSON.stringify(dailyStatus));
+}
+
+function updateCurrentWeekTaskCheckboxes() {
+  const weekStart = getCurrentWeekStart();
+
+  taskCheckboxes.forEach(checkbox => {
+    const dayOffset = Number(checkbox.dataset.day);
+    const task = checkbox.dataset.task;
+    if (!Number.isFinite(dayOffset) || !task) return;
+
+    const targetDate = new Date(weekStart);
+    targetDate.setDate(targetDate.getDate() + dayOffset);
+
+    const dateKey = getDateKey(targetDate);
+    checkbox.checked = !!dailyStatus[dateKey]?.[task];
+  });
+}
+
+function refreshIfWeekChanged() {
+  const newWeekKey = getWeekKey();
+  if (newWeekKey === currentWeekKey) return;
+
+  currentWeekKey = newWeekKey;
+  updateCurrentWeekTaskCheckboxes();
+  updateStats();
+  renderHeatmap();
 }
 
 function save() {
   const data = {
-    checks: [...checkboxes].map(c => c.checked),
     notes: notes.value
   };
 
   localStorage.setItem("gymData", JSON.stringify(data));
-  syncCurrentWeekGymHeatmap();
+  syncCurrentWeekHeatmapData();
   updateStats();
   renderHeatmap();
 }
@@ -74,16 +87,11 @@ function load() {
   const data = JSON.parse(localStorage.getItem("gymData"));
 
   if (data) {
-    checkboxes.forEach((c, i) => {
-      if (!c.classList.contains("gym")) {
-        c.checked = data.checks?.[i] || false;
-      }
-    });
     notes.value = data.notes || "";
   }
 
-  updateCurrentWeekGymCheckboxes();
-  syncCurrentWeekGymHeatmap();
+  updateCurrentWeekTaskCheckboxes();
+  syncCurrentWeekHeatmapData();
   updateStats();
 }
 
@@ -106,6 +114,13 @@ function updateStats() {
 function isLeapYear(year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
+
+/*
+function isRestDate(date) {
+  const day = date.getDay();
+  return day === 0 || day === 4; // Sunday and Thursday
+}
+*/
 
 function renderHeatmap() {
   const year = new Date().getFullYear();
@@ -146,21 +161,20 @@ function renderHeatmap() {
 
     const currentDate = new Date(year, 0, dayIndex + 1);
     const dateKey = getDateKey(currentDate);
+    const completedCount = Object.values(dailyStatus[dateKey] || {}).filter(Boolean).length;
     cell.title = `${currentDate.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
 
-    if (gymLog[dateKey]) cell.classList.add("active");
-
-    cell.onclick = () => {
-      if (gymLog[dateKey]) {
-        delete gymLog[dateKey];
-      } else {
-        gymLog[dateKey] = true;
-      }
-      localStorage.setItem("gymHeatmap", JSON.stringify(gymLog));
-      renderHeatmap();
-      updateCurrentWeekGymCheckboxes();
-      updateStats();
-    };
+    // Rest-day logic is currently disabled, but preserved here for future use.
+    // if (isRestDate(currentDate)) {
+    //   cell.classList.add("rest");
+    //   cell.title += " — Rest day";
+    // } else {
+    if (completedCount > 0) {
+      cell.classList.add(`level-${completedCount}`);
+      cell.title += ` — ${completedCount} of 3 tasks`;
+    } else {
+      cell.title += " — 0 of 3 tasks";
+    }
 
     heatmap.appendChild(cell);
   }
@@ -178,7 +192,12 @@ if (localStorage.getItem("dark") === "true") {
 
 /* EXPORT */
 document.getElementById("exportBtn").onclick = () => {
-  const blob = new Blob([localStorage.getItem("gymData")], {
+  const exportData = {
+    notes: JSON.parse(localStorage.getItem("gymData") || "{}")?.notes || "",
+    dailyStatus
+  };
+
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {
     type: "application/json"
   });
 
@@ -193,8 +212,15 @@ document.getElementById("importFile").onchange = (e) => {
   const reader = new FileReader();
 
   reader.onload = () => {
-    localStorage.setItem("gymData", reader.result);
-    location.reload();
+    try {
+      const imported = JSON.parse(reader.result);
+      localStorage.setItem("gymData", JSON.stringify({ notes: imported.notes || "" }));
+      localStorage.setItem("dailyStatus", JSON.stringify(imported.dailyStatus || {}));
+      location.reload();
+    } catch (err) {
+      console.error("Invalid import file", err);
+      alert("Import failed: invalid JSON file.");
+    }
   };
 
   reader.readAsText(e.target.files[0]);
@@ -203,6 +229,14 @@ document.getElementById("importFile").onchange = (e) => {
 /* EVENTS */
 checkboxes.forEach(c => c.addEventListener("change", save));
 notes.addEventListener("input", save);
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    refreshIfWeekChanged();
+  }
+});
+
+setInterval(refreshIfWeekChanged, 60 * 1000); // refresh once per minute if the week changes
 
 /* INIT */
 load();
