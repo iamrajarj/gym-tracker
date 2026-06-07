@@ -38,7 +38,9 @@ Gym Tracker is ideal for fitness lovers who want a simple way to:
 
 ## 💡 Usage
 
-1. Open `index.html` in your browser or deploy to GitHub Pages
+This project is hosted on GitHub Pages at: https://iamrajarj.github.io/gym-tracker/
+
+1. Open the live app at https://iamrajarj.github.io/gym-tracker/
 2. Toggle the dark mode button to switch themes
 3. Mark daily habits for gym, sleep, and protein
 4. Use the heatmap to review activity intensity over the year
@@ -50,11 +52,19 @@ For GitHub Pages deployment:
 
 1. Push the repo to GitHub
 2. Enable GitHub Pages on the `main` branch
-3. Visit the published URL such as `https://<username>.github.io/gym-tracker/`
+3. Visit the published URL like: https://iamrajarj.github.io/gym-tracker/
 
 ## 🔧 Local Development
 
-No build tools are required. Simply open the app in a browser or use a local server such as Live Server in VS Code.
+Clone this repository locally and open `index.html` in a browser, or use a simple runner such as Live Server in VS Code.
+
+```bash
+git clone https://github.com/iamrajarj/gym-tracker.git
+cd gym-tracker
+# Open index.html directly, or use Live Server / any static file server
+```
+
+If using VS Code, install the Live Server extension, then right-click `index.html` and choose **Open with Live Server**.
 
 ## 📈 SEO Keywords
 
