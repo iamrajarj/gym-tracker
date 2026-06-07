@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Gym Tracker</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#111">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏋️ Gym Tracker</h1>
+
+<div class="top-bar">
+<button id="darkToggle">🌙 Dark Mode</button>
+<button id="exportBtn">📤 Export</button>
+<label class="importBtn">
+📥 Import
+<input type="file" id="importFile" hidden>
+</label>
+</div>
+
+<div class="stats">
+<div>🔥 Gym Days: <span id="streak">0</span></div>
+<div>📊 Weekly Progress: <span id="progress">0%</span></div>
+</div>
+
+<!-- WEEKLY TRACKER -->
+<div class="card">
+<h2>📅 Weekly Tracker</h2>
+
+<table>
+<thead>
+<tr>
+<th>Habit</th>
+<th>Mon</th>
+<th>Tue</th>
+<th>Wed</th>
+<th>Thu</th>
+<th>Fri</th>
+<th>Sat</th>
+<th>Sun</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Gym</td>
+<td><input type="checkbox" class="gym"></td>
+<td><input type="checkbox" class="gym"></td>
+<td class="off">OFF</td>
+<td><input type="checkbox" class="gym"></td>
+<td><input type="checkbox" class="gym"></td>
+<td><input type="checkbox" class="gym"></td>
+<td class="off">OFF</td>
+</tr>
+
+<tr>
+<td>Sleep</td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+</tr>
+
+<tr>
+<td>Protein</td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+<td><input type="checkbox" class="habit"></td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<!-- NOTES -->
+<div class="card">
+<h2>📝 Weekly Notes</h2>
+<textarea id="notes" placeholder="Write PRs, weight, diet notes..."></textarea>
+</div>
+
+<!-- HEATMAP -->
+<div class="card">
+<h2>📅 Activity Heatmap</h2>
+<div id="heatmap"></div>
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>
