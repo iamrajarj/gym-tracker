@@ -72,4 +72,4 @@ Gym tracker, habit tracker, workout tracker, fitness tracker, heatmap tracker, d
 
 ## 📄 License
 
-This project is open source and available to customize for your own fitness goals.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
