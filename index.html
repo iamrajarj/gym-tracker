@@ -53,12 +53,12 @@
 
 <tr>
 <td>Gym</td>
-<td><input type="checkbox" class="gym"></td>
-<td><input type="checkbox" class="gym"></td>
+<td><input type="checkbox" class="gym" data-day="0"></td>
+<td><input type="checkbox" class="gym" data-day="1"></td>
+<td><input type="checkbox" class="gym" data-day="2"></td>
 <td class="off">OFF</td>
-<td><input type="checkbox" class="gym"></td>
-<td><input type="checkbox" class="gym"></td>
-<td><input type="checkbox" class="gym"></td>
+<td><input type="checkbox" class="gym" data-day="4"></td>
+<td><input type="checkbox" class="gym" data-day="5"></td>
 <td class="off">OFF</td>
 </tr>
 
@@ -96,9 +96,25 @@
 </div>
 
 <!-- HEATMAP -->
-<div class="card">
+<div class="card heatmap-card">
 <h2>📅 Activity Heatmap</h2>
-<div id="heatmap"></div>
+<div class="heatmap-wrapper">
+  <div class="heatmap-months" id="heatmapMonths"></div>
+  <div class="heatmap-body">
+    <div class="heatmap-row-labels">
+      <span>Mon</span>
+      <span></span>
+      <span>Wed</span>
+      <span></span>
+      <span>Fri</span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="heatmap-container">
+      <div id="heatmap" class="heatmap-grid"></div>
+    </div>
+  </div>
+</div>
 </div>
 
 </div>
