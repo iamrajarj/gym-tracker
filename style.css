@@ -234,4 +234,25 @@ textarea {
 .dark .day {
   background: #333;
 }
-/* intensity colors defined above; removed duplicate overrides */
+
+.dark .day.level-1 {
+  background: #b7e0a9;
+}
+
+.dark .day.level-2 {
+  background: #63c76f;
+}
+
+.dark .day.level-3 {
+  background: #1f9d48;
+}
+
+.dark .day.blank {
+  background: transparent;
+}
+
+.dark .heatmap-months,
+.dark .heatmap-row-labels span,
+.dark .heatmap-legend {
+  color: #ccc;
+}
